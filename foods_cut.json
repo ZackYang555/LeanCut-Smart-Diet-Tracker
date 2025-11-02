@@ -1,0 +1,189 @@
+{
+    "Chicken Breast": {
+        "kcal": 165,
+        "protein": 31,
+        "carbs": 0,
+        "fat": 3.6,
+        "tags": [
+            "lean",
+            "protein"
+        ]
+    },
+    "Oatmeal": {
+        "kcal": 120,
+        "protein": 5,
+        "carbs": 20,
+        "fat": 3,
+        "tags": [
+            "fiber",
+            "carb"
+        ]
+    },
+    "Egg": {
+        "kcal": 70,
+        "protein": 6,
+        "carbs": 0,
+        "fat": 5,
+        "tags": [
+            "protein"
+        ]
+    },
+    "Salmon": {
+        "kcal": 208,
+        "protein": 20,
+        "carbs": 0,
+        "fat": 13,
+        "tags": [
+            "omega3",
+            "lean"
+        ]
+    },
+    "Broccoli": {
+        "kcal": 55,
+        "protein": 5,
+        "carbs": 10,
+        "fat": 0.5,
+        "tags": [
+            "fiber"
+        ]
+    },
+    "Tuna Salad": {
+        "kcal": 300,
+        "protein": 40,
+        "carbs": 10,
+        "fat": 6,
+        "tags": [
+            "lean"
+        ]
+    },
+    "Sweet Potato": {
+        "kcal": 90,
+        "protein": 2,
+        "carbs": 21,
+        "fat": 0.1,
+        "tags": [
+            "carb",
+            "fiber"
+        ]
+    },
+    "Greek Yogurt": {
+        "kcal": 100,
+        "protein": 10,
+        "carbs": 4,
+        "fat": 3,
+        "tags": [
+            "protein"
+        ]
+    },
+    "Avocado": {
+        "kcal": 160,
+        "protein": 2,
+        "carbs": 8,
+        "fat": 15,
+        "tags": [
+            "healthy fat"
+        ]
+    },
+    "Tofu": {
+        "kcal": 80,
+        "protein": 8,
+        "carbs": 2,
+        "fat": 4,
+        "tags": [
+            "vegan",
+            "protein"
+        ]
+    },
+    "Brown Rice": {
+        "kcal": 112,
+        "protein": 2.5,
+        "carbs": 23,
+        "fat": 1,
+        "tags": [
+            "carb"
+        ]
+    },
+    "Shrimp": {
+        "kcal": 99,
+        "protein": 24,
+        "carbs": 0,
+        "fat": 0.3,
+        "tags": [
+            "lean"
+        ]
+    },
+    "Steamed Vegetables": {
+        "kcal": 60,
+        "protein": 3,
+        "carbs": 12,
+        "fat": 0.2,
+        "tags": [
+            "fiber",
+            "vegan"
+        ]
+    },
+    "Beef Tenderloin": {
+        "kcal": 210,
+        "protein": 26,
+        "carbs": 0,
+        "fat": 12,
+        "tags": [
+            "protein"
+        ]
+    },
+    "Apple": {
+        "kcal": 80,
+        "protein": 0.3,
+        "carbs": 21,
+        "fat": 0.2,
+        "tags": [
+            "fruit"
+        ]
+    },
+    "Cottage Cheese": {
+        "kcal": 98,
+        "protein": 11,
+        "carbs": 3,
+        "fat": 4,
+        "tags": [
+            "protein"
+        ]
+    },
+    "Green Salad": {
+        "kcal": 40,
+        "protein": 2,
+        "carbs": 8,
+        "fat": 0.3,
+        "tags": [
+            "fiber",
+            "vegan"
+        ]
+    },
+    "Protein Shake": {
+        "kcal": 180,
+        "protein": 30,
+        "carbs": 6,
+        "fat": 3,
+        "tags": [
+            "protein"
+        ]
+    },
+    "Tuna Sandwich": {
+        "kcal": 270,
+        "protein": 25,
+        "carbs": 22,
+        "fat": 8,
+        "tags": [
+            "balanced"
+        ]
+    },
+    "Miso Soup": {
+        "kcal": 50,
+        "protein": 3,
+        "carbs": 5,
+        "fat": 1,
+        "tags": [
+            "vegan"
+        ]
+    }
+}

@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LeanCut — Smart Diet Tracker</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: rgba(255, 255, 255, 0.06);
+      --glass: rgba(255, 255, 255, 0.08);
+      --text: #eaf2ff;
+      --muted: #a7b2c7;
+      --brand: #7c9cff;
+      --brand-2: #5be6ff;
+      --ok: #34d399;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --card: #11182d;
+      --stroke: rgba(255, 255, 255, 0.12);
+      --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: radial-gradient(1200px 600px at 10% -10%, #1e2650 0%, transparent 50%),
+        radial-gradient(900px 600px at 120% 0%, #093a68 0%, transparent 60%),
+        linear-gradient(180deg, #0b1020 0%, #0b1226 100%);
+      min-height: 100vh;
+    }
+
+    header {
+      position: relative;
+      padding: 36px 20px 80px;
+      background:
+        radial-gradient(800px 220px at 10% 0%, rgba(124, 156, 255, .35) 0%, transparent 60%),
+        radial-gradient(600px 220px at 100% 0%, rgba(91, 230, 255, .25) 0%, transparent 60%);
+      border-bottom: 1px solid var(--stroke);
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      letter-spacing: .3px
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px
+    }
+
+    .glass {
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .toolbar {
+      margin-top: 12px;
+      padding: 16px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center
+    }
+
+    select,
+    input,
+    button {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--stroke);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+    }
+
+    button.primary {
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+      border: none;
+      color: #08111f;
+      font-weight: 700
+    }
+
+    button.ghost {
+      background: rgba(255, 255, 255, 0.05)
+    }
+
+    button:disabled {
+      opacity: .5;
+      cursor: not-allowed
+    }
+
+    main {
+      padding: 28px 0 60px
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1.2fr 1fr
+    }
+
+    @media (max-width:980px) {
+      .grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .card {
+      padding: 18px;
+      border-radius: 16px;
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow)
+    }
+
+    .section-title {
+      font-weight: 700;
+      margin: 0 0 10px;
+      letter-spacing: .2px
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center
+    }
+
+    .progress-wrap {
+      margin-top: 10px
+    }
+
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--muted)
+    }
+
+    .progress {
+      height: 14px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--stroke);
+      margin-top: 6px
+    }
+
+    .progress>div {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+      transition: width .45s ease
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+      min-height: 28px
+    }
+
+    .chip {
+      padding: 6px 10px;
+      font-size: 13px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(124, 156, 255, 0.12);
+      color: #cfe0ff;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center
+    }
+
+    .chip button {
+      border: 1px solid var(--stroke);
+      background: transparent;
+      color: var(--text);
+      padding: 2px 6px;
+      border-radius: 8px
+    }
+
+    .pie-row {
+      display: flex;
+      align-items: center;
+      gap: 16px
+    }
+
+    .legend {
+      font-size: 13px
+    }
+
+    .legend div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 4px 0
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      display: inline-block
+    }
+
+    .dot.p {
+      background: #60a5fa
+    }
+
+    .dot.c {
+      background: #34d399
+    }
+
+    .dot.f {
+      background: #f59e0b
+    }
+
+    .cards {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr))
+    }
+
+    .meal-card {
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--stroke)
+    }
+
+    .meal-card b {
+      letter-spacing: .2px
+    }
+
+    .items {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 6px 0 8px;
+      line-height: 1.5;
+      white-space: pre-line;
+      /* show multi-lines */
+    }
+
+    .encourage {
+      margin-top: 10px;
+      font-weight: 600
+    }
+
+    .ok {
+      color: var(--ok)
+    }
+
+    .warn {
+      color: var(--warn)
+    }
+
+    .danger {
+      color: var(--danger)
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .45);
+      display: none
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px
+    }
+
+    .modal .panel {
+      width: min(460px, 94vw);
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--shadow)
+    }
+
+    .modal .actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 14px
+    }
+
+    .show {
+      display: flex !important
+    }
+
+    pre {
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--stroke);
+      padding: 12px;
+      border-radius: 12px
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 24px 0 40px
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <h1>LeanCut — Smart Diet Tracker</h1>
+      <div id="meta" class="subtitle">Loading…</div>
+
+      <div class="toolbar glass">
+        <div class="row">
+          <label>Meal</label>
+          <select id="mealSel">
+            <option>Breakfast</option>
+            <option>Lunch</option>
+            <option>Dinner</option>
+            <option>Snack 🍎</option>
+          </select>
+          <button id="btnLoad" class="primary">Load Foods</button>
+        </div>
+        <div class="row">
+          <label>Food</label>
+          <select id="foodSel" style="min-width:360px"></select>
+          <label>Portion</label>
+          <input id="portion" type="number" min="0.25" step="0.25" value="1" style="width:110px">
+          <button id="btnAdd" class="primary">Add</button>
+          <button id="btnClear" class="ghost">Clear</button>
+          <button id="btnSubmit" class="primary" disabled>Submit Meal</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="grid">
+      <section class="card">
+        <div class="section-title">Today Overview</div>
+        <div class="muted" id="targetsLine">Target: —</div>
+        <div class="progress-wrap">
+          <div class="progress-labels">
+            <span id="calLeft">0 / 0 kcal</span><span id="calPct">0%</span>
+          </div>
+          <div class="progress">
+            <div id="calBar"></div>
+          </div>
+        </div>
+        <div id="encourage" class="encourage"></div>
+      </section>
+
+      <section class="card">
+        <div class="section-title">Macros (g) — Today</div>
+        <div class="pie-row">
+          <canvas id="pie" width="150" height="150"></canvas>
+          <div class="legend">
+            <div><span class="dot p"></span> Protein: <b id="pVal">0</b> g</div>
+            <div><span class="dot c"></span> Carbs: <b id="cVal">0</b> g</div>
+            <div><span class="dot f"></span> Fat: <b id="fVal">0</b> g</div>
+          </div>
+        </div>
+        <div class="muted" style="margin-top:6px">* Based on grams (not kcal)</div>
+      </section>
+    </div>
+
+    <section style="margin-top:18px" class="card">
+      <div class="section-title">Selected Items</div>
+      <div id="chips" class="chips"></div>
+      <div id="mealTotals" class="muted" style="margin-top:6px">Nothing selected yet — add items above.</div>
+    </section>
+
+    <h3 style="margin:20px 0 8px">Meals Today</h3>
+    <section id="mealCards" class="cards"></section>
+
+    <h3 style="margin:20px 0 8px">Daily Report</h3>
+    <div class="row" style="margin-bottom:8px">
+      <button id="btnReport" class="primary">Generate Today's Report</button>
+    </div>
+    <pre id="reportBox"></pre>
+  </main>
+
+  <footer>© LeanCut — keep consistent discipline 💪</footer>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="backdrop"></div>
+  <div class="modal" id="modal">
+    <div class="panel">
+      <div style="font-weight:700;margin-bottom:8px" id="modalTitle">Duplicate Meal</div>
+      <div class="muted" id="modalMsg">You’ve already logged this meal today.</div>
+      <div class="actions">
+        <button id="btnModalCancel" class="ghost">Cancel</button>
+        <button id="btnModalSnack" class="ghost">Add as Snack</button>
+        <button id="btnModalAppend" class="ghost">Append</button>
+        <button id="btnModalReplace" class="primary">Replace</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --------- state ---------
+    const state = {
+      foods: [],
+      selected: [],
+      target: { kcal: 0, protein: 0, carbs: 0, fat: 0 },
+      totals: { kcal: 0, protein: 0, carbs: 0, fat: 0 },
+      mealsLogged: {} // session-level flags from report
+    };
+    const $ = id => document.getElementById(id);
+
+    // --------- API ---------
+    async function loadState() {
+      const r = await fetch('/api/state'); const j = await r.json();
+      state.target = j.target || state.target;
+      $('meta').textContent = `Today: Day ${j.dayNumber} (${j.today})`;
+      $('targetsLine').textContent = `Target: ${j.target.kcal} kcal | P${j.target.protein} C${j.target.carbs} F${j.target.fat}`;
+      await refreshDayTotals(); renderOverview();
+    }
+    async function loadFoods() {
+      const r = await fetch('/api/foods'); const j = await r.json();
+      state.foods = j.foods || [];
+      const sel = $('foodSel'); sel.innerHTML = '';
+      state.foods.forEach(f => {
+        const opt = document.createElement('option');
+        opt.value = f.name;
+        opt.textContent = `${f.name} — ${f.kcal} kcal | P${f.protein} C${f.carbs} F${f.fat}`;
+        sel.appendChild(opt);
+      });
+    }
+    async function postMeal(meal, items, mode) {
+      const r = await fetch('/api/meal', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ meal, items, mode })
+      });
+      return r.json();
+    }
+    async function postDayReport() {
+      const r = await fetch('/api/report/day', { method: 'POST' });
+      return r.json();
+    }
+
+    // --------- parse & rebuild ---------
+    function parseTotalsFromReport(txt) {
+      const m = txt.match(/Total:\s+(\d+)\s+kcal\s+\|\s+P(\d+)\s+C(\d+)\s+F(\d+)/i);
+      if (!m) return { kcal: 0, protein: 0, carbs: 0, fat: 0 };
+      return { kcal: +m[1], protein: +m[2], carbs: +m[3], fat: +m[4] };
+    }
+    async function refreshDayTotals() {
+      const j = await postDayReport();
+      if (j && j.ok) {
+        state.totals = parseTotalsFromReport(j.report || "");
+        $('reportBox').textContent = j.report || '';
+        rebuildMealCardsFromReport(j.report || '');
+      } else {
+        state.totals = { kcal: 0, protein: 0, carbs: 0, fat: 0 };
+        $('mealCards').innerHTML = '';
+        state.mealsLogged = {};
+      }
+    }
+    function rebuildMealCardsFromReport(txt) {
+      $('mealCards').innerHTML = '';
+      state.mealsLogged = {};
+      const mealNames = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
+      for (const name of mealNames) {
+        const rx = new RegExp(`${name}:(?:\\r?\\n)([\\s\\S]*?)(?=\\n[A-Z][a-z]+:|\\n-+|$)`, 'm');
+        const m = txt.match(rx);
+        if (!m) continue;
+        const raw = (m[1] || '').trim();
+        const lines = raw.split('\n').map(s => s.trim());
+        const itemLines = lines.filter(s => s.startsWith('- '));
+        if (itemLines.length === 0) continue;
+        state.mealsLogged[name] = true;
+        addMealCard(name, itemLines.join('\n'));
+      }
+    }
+
+    // --------- UI helpers ---------
+    function addChip(name, portion) {
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.innerHTML = `<b>${name}</b> × ${portion} <button>×</button>`;
+      chip.querySelector('button').onclick = () => {
+        const i = state.selected.findIndex(x => x.name === name && x.portion === portion);
+        if (i >= 0) state.selected.splice(i, 1);
+        chip.remove(); calcSelectedTotals();
+      };
+      $('chips').appendChild(chip);
+    }
+    function calcSelectedTotals() {
+      let t = { kcal: 0, protein: 0, carbs: 0, fat: 0 };
+      for (const it of state.selected) {
+        const f = state.foods.find(x => x.name === it.name); if (!f) continue;
+        t.kcal += f.kcal * it.portion; t.protein += f.protein * it.portion;
+        t.carbs += f.carbs * it.portion; t.fat += f.fat * it.portion;
+      }
+      const has = state.selected.length > 0;
+      $('mealTotals').textContent = has
+        ? `Current meal: ${Math.round(t.kcal)} kcal | P${Math.round(t.protein)} C${Math.round(t.carbs)} F${Math.round(t.fat)}`
+        : 'Nothing selected yet — add items above.';
+      $('btnSubmit').disabled = !has;
+    }
+    function clearSelection() { state.selected = []; $('chips').innerHTML = ''; calcSelectedTotals(); }
+    function addMealCard(meal, textLines) {
+      if (!textLines || !textLines.trim()) return;
+      const card = document.createElement('div');
+      card.className = 'meal-card';
+      const htmlList = textLines.replace(/\n/g, '<br>');
+      card.innerHTML = `<b>${meal}</b><div class="items">${htmlList}</div>`;
+      $('mealCards').prepend(card);
+    }
+
+    // --------- charts & overview ----------
+    function drawPie(p, c, f) {
+      const cvs = $('pie'), ctx = cvs.getContext('2d');
+      ctx.clearRect(0, 0, cvs.width, cvs.height);
+      const total = Math.max(1, p + c + f), center = 75, r = 70;
+      const segs = [{ v: p, col: '#60a5fa' }, { v: c, col: '#34d399' }, { v: f, col: '#f59e0b' }];
+      let a = -Math.PI / 2;
+      for (const s of segs) {
+        const ang = s.v / total * Math.PI * 2;
+        ctx.beginPath(); ctx.moveTo(center, center);
+        ctx.arc(center, center, r, a, a + ang); ctx.closePath();
+        ctx.fillStyle = s.col; ctx.fill(); a += ang;
+      }
+    }
+    function renderOverview() {
+      const pctReal = Math.round((state.totals.kcal / state.target.kcal) * 100);
+      const pctBar = Math.min(100, Math.max(0, pctReal));
+      $('calBar').style.width = pctBar + '%';
+      $('calLeft').textContent = `${Math.round(state.totals.kcal)} / ${state.target.kcal} kcal`;
+      $('calPct').textContent = `${Math.max(0, pctReal)}%`;  // show real pct
+      $('pVal').textContent = Math.round(state.totals.protein);
+      $('cVal').textContent = Math.round(state.totals.carbs);
+      $('fVal').textContent = Math.round(state.totals.fat);
+      drawPie(state.totals.protein, state.totals.carbs, state.totals.fat);
+
+      const diff = state.totals.kcal - state.target.kcal;
+      const el = $('encourage');
+      if (diff > 400) {
+        el.textContent = '⚠️ Well above target — go much lighter next meals.';
+        el.className = 'encourage danger';
+      } else if (diff > 100) {
+        el.textContent = '⚠️ Slightly above target — go lighter next meal.';
+        el.className = 'encourage warn';
+      } else if (diff < -200) {
+        el.textContent = '💪 Below target — consider lean protein next.';
+        el.className = 'encourage';
+      } else {
+        el.textContent = '🔥 Excellent control today!';
+        el.className = 'encourage ok';
+      }
+    }
+
+    // --------- modal (duplicate meal) ---------
+    const modal = $('modal'), backdrop = $('backdrop');
+    function openModal(title, msg, onReplace, onSnack, onAppend) {
+      $('modalTitle').textContent = title; $('modalMsg').textContent = msg;
+      modal.classList.add('show'); backdrop.style.display = 'block';
+      $('btnModalReplace').onclick = () => { closeModal(); onReplace && onReplace(); };
+      $('btnModalSnack').onclick = () => { closeModal(); onSnack && onSnack(); };
+      $('btnModalAppend').onclick = () => { closeModal(); onAppend && onAppend(); };
+      $('btnModalCancel').onclick = closeModal;
+    }
+    function closeModal() { modal.classList.remove('show'); backdrop.style.display = 'none'; }
+
+    // --------- events ----------
+    $('btnLoad').onclick = loadFoods;
+    $('btnAdd').onclick = () => {
+      const name = $('foodSel').value;
+      const portion = parseFloat($('portion').value || '1');
+      if (!name || !portion || portion <= 0) return alert('Select a food and a valid portion.');
+      state.selected.push({ name, portion });
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.innerHTML = `<b>${name}</b> × ${portion} <button>×</button>`;
+      chip.querySelector('button').onclick = () => {
+        const i = state.selected.findIndex(x => x.name === name && x.portion === portion);
+        if (i >= 0) state.selected.splice(i, 1);
+        chip.remove(); calcSelectedTotals();
+      };
+      $('chips').appendChild(chip);
+      calcSelectedTotals();
+    };
+    $('btnClear').onclick = () => clearSelection();
+
+    $('btnSubmit').onclick = async () => {
+      let meal = $('mealSel').value.replace(' 🍎', '');
+
+      const trySubmit = async (finalMeal, mode = 'append') => {
+        const payload = state.selected.map(it => ({ name: it.name, portion: it.portion }));
+        if (!payload.length) return alert('Add at least one item.');
+        const j = await postMeal(finalMeal, payload, mode);
+        if (!j.ok) return alert('Submit failed.');
+        clearSelection();
+        await refreshDayTotals();  // rebuild from report
+        renderOverview();
+        state.mealsLogged[finalMeal] = true;
+        alert('Meal saved!');
+      };
+
+      if (state.mealsLogged[meal]) {
+        openModal(
+          'Duplicate Meal',
+          `You’ve already logged ${meal} today. Replace, Append or add as Snack?`,
+          () => trySubmit(meal, 'replace'),
+          () => trySubmit('Snack', 'append'),
+          () => trySubmit(meal, 'append')
+        );
+      } else {
+        await trySubmit(meal, 'append'); // first submit also append-friendly
+      }
+    };
+
+    $('btnReport').onclick = async () => {
+      const j = await postDayReport();
+      $('reportBox').textContent = j.ok ? j.report : 'No records.';
+    };
+
+    // boot
+    (async function init() {
+      await loadState();
+      await loadFoods();
+      calcSelectedTotals(); // initial placeholder + disable submit
+    })();
+  </script>
+</body>
+
+</html>
